@@ -1,4 +1,6 @@
 """
+utils.py
+--------
 Funciones auxiliares compartidas entre módulos.
 """
 

@@ -19,6 +19,9 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
+# Modelos entrenados en caché (se regeneran automáticamente, ver src/model_cache.py)
+data/model_cache/
+
 # Notebooks
 .ipynb_checkpoints/
 

@@ -28,3 +28,19 @@ def test_predict_probabilities_sum_to_one():
     result = model.predict("TeamA", "TeamB")
     total = sum(result.values())
     assert abs(total - 1.0) < 1e-2
+
+
+def test_altitude_bonus_increases_home_win_probability():
+    """Un equipo con altitud registrada debería tener mayor prob. de local
+    que el mismo enfrentamiento sin bonus de altitud."""
+    base_model = EloModel(home_advantage=45)
+    altitude_model = EloModel(
+        home_advantage=45,
+        altitude_teams={"Toluca": 2680},
+        altitude_bonus_per_1000m=25,
+    )
+
+    base_result = base_model.predict("Toluca", "TeamB")
+    altitude_result = altitude_model.predict("Toluca", "TeamB")
+
+    assert altitude_result["home_win"] > base_result["home_win"]
