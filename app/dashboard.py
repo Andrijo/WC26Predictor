@@ -26,6 +26,38 @@ from src.utils import get_team_list, head_to_head
 
 st.set_page_config(page_title="Match Predictor", layout="wide")
 
+def _skeleton_box(height: str, width: str = "100%", margin_bottom: str = "12px") -> str:
+    """Un bloque gris con animación de brillo (shimmer), imitando la forma
+    del contenido real mientras carga. rgba en vez de colores fijos para que
+    se vea razonable tanto en tema claro como oscuro de Streamlit."""
+    return (
+        f'<div style="height:{height};width:{width};margin-bottom:{margin_bottom};'
+        f'border-radius:8px;background:linear-gradient(90deg, '
+        f'rgba(128,128,128,0.12) 25%, rgba(128,128,128,0.22) 37%, '
+        f'rgba(128,128,128,0.12) 63%);background-size:400% 100%;'
+        f'animation:skeleton-shimmer 1.4s ease infinite;"></div>'
+    )
+
+
+def show_skeleton():
+    """Placeholder de carga que imita la forma del dashboard real:
+    subtítulo, dos selectores de equipo, gráfico de barras y 3 métricas."""
+    st.markdown(
+        "<style>@keyframes skeleton-shimmer "
+        "{0%{background-position:200% 0} 100%{background-position:-200% 0}}</style>"
+        + _skeleton_box("20px", "40%")
+        + '<div style="display:flex;gap:16px;margin:16px 0;">'
+        + _skeleton_box("38px", "50%", "0")
+        + _skeleton_box("38px", "50%", "0")
+        + "</div>"
+        + _skeleton_box("260px")
+        + '<div style="display:flex;gap:16px;">'
+        + _skeleton_box("70px", "33%", "0")
+        + _skeleton_box("70px", "33%", "0")
+        + _skeleton_box("70px", "33%", "0")
+        + "</div>",
+        unsafe_allow_html=True,
+    )
 
 @st.cache_data
 def get_matches(league_key: str) -> pd.DataFrame:
@@ -59,8 +91,14 @@ with st.sidebar:
 league = LEAGUES[league_key]
 st.caption(f"Ensemble (Elo + Poisson) — {league.name}")
 
+skeleton = st.empty()
+with skeleton.container():
+    show_skeleton()
+
 matches = get_matches(league_key)
 teams = get_team_list(matches)
+
+skeleton.empty()
 
 model = get_model(league_key, elo_weight, poisson_weight, matches)
 
