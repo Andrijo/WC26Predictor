@@ -51,26 +51,11 @@ streamlit run app/dashboard.py
 
 Si el comando `streamlit` no se reconoce (error `command not found` porque el
 script no quedó en el `PATH`, algo común con `pip install --user` o en algunos
-entornos virtuales), usa el módulo directamente con el mismo intérprete de
+entornos virtuales), use el módulo directamente con el mismo intérprete de
 Python donde lo instalaste:
 
 ```bash
 python -m streamlit run app/dashboard.py
-```
-
-Esto aplica a cualquier paquete con CLI (pytest, jupyter, etc.): si el
-ejecutable no está en el `PATH`, casi siempre puedes invocarlo como módulo:
-
-```bash
-python -m pytest tests/ -v
-python -m pip install -r requirements.txt
-```
-
-Para confirmar qué intérprete y qué paquetes está usando tu shell:
-
-```bash
-python -c "import sys; print(sys.executable)"
-python -m pip show streamlit
 ```
 
 ### 3. Backtesting walk-forward
